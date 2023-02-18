@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" /> -->
+    <title>Video Player</title>
+</head>
+<body>
+    <video src="./screenRecordings/4.mp4" id="myVid" controls></video>
+    <input type="text" id="input">
+
+</body>
+<script>
+// var distanceModel = require('./demo.py')
+// var distance = new distanceModel('MonitorBabay').call('getEyePixelDist').then(function(){
+//     console.log(person_distance)
+// })
+var num = ''
+var video = document.getElementById('myVid');
+
+const input = document.querySelector("#input");
+input.addEventListener('input',function(e){
+    // console.log(e.target.value)
+    if(e.target.value >5){
+        video.pause()
+    }else{
+        video.play()
+    }
+
+})
+
+</script>
+</html>

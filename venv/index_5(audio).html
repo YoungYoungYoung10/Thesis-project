@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- <title>HTML5-Video播放视频，canvas绘制视频</title> -->
+  <style>
+    body {
+      background: black;
+      color: #CCCCCC;
+      width: 100%;
+      height: 100%;
+    }
+
+    div {
+      float: left;
+      border: 1px solid #444444;
+      padding: 10px;
+      margin: 10px;
+      background: #3B3B3B;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <p>左侧为为canvas绘制的视频，右侧HTML5-video标签播放的视频</p> -->
+
+  <canvas id="myCanvas">
+  </canvas>
+  <video id="myvideo" controls width="100" autoplay="autoplay" loop>
+    <source src="../screenRecordings/4.mp4" type='video/mp4'>
+  </video>
+  <audio id="myaudio" src="../audioRecordings/moveAway.mp3" type = "audio/mpeg"></audio>
+
+
+  <script>
+    // 播放器变量
+    var v = document.getElementById("myvideo");
+    var c = document.getElementById("myCanvas");
+    var a = document.getElementById("myaudio");
+ 
+
+
+
+    // 播放器代码
+    ctx = c.getContext('2d');
+    // 每 20 毫秒，代码就会绘制视频的当前帧
+    v.addEventListener('play', function () {//播放
+      var i = window.setInterval(function () {
+        ctx.drawImage(v, 0, 0, 300, 150);
+      }, 20);
+    }, false);
+    v.addEventListener('pause', function () {//暂停
+      window.clearInterval(i);
+    }, false);
+
+
+    // 计算机视觉
+    document.addEventListener('DOMContentLoaded', function () {
+      const websocketClient = new WebSocket("ws://localhost:12345/");
+      websocketClient.onopen = function () {
+        console.log('Client Connected!')
+        // websocketClient.send("hello!")
+      }
+      websocketClient.onmessage = function (msg) {
+        console.log(msg.data);
+        if (msg.data < 1.2) {
+          v.pause();
+          a.play()
+        } else {
+          v.play()
+        }
+        
+      
+
+
+      }
+
+    }, false)
+
+
+  </script>
+</body>
+
+</html>

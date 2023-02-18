@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>websocket chat</title>
+    <style>
+    /* progress {
+    -webkit-writing-mode: horizontal-tb !important;
+    appearance: auto;
+    box-sizing: border-box;
+    display: inline-block;
+    height: 1em;
+    width: 10em;
+    vertical-align: -0.2em;
+    color: green;
+    background: yellow;
+    }
+
+    progress::-webkit-progress-value {
+        background: red;
+    }
+
+    progress::-moz-progress-bar {
+        background: lightcoral;
+    } */
+
+    /*************************/
+/* 
+    .bar {
+        background-image: 
+        linear-gradient(red,red),
+        linear-gradient(orange,orange),
+        linear-gradient(purple,purple),
+        linear-gradient(#2486ff,#2486ff),
+        linear-gradient(green,green);
+        background-size: 10%, 30%, 50%,70%,90%;
+        height: 20px;
+        background-repeat: no-repeat;
+        background-color: #f5f5f5;
+    }
+    .bar::before{
+        content:'';
+        display: flex;
+        justify-content: end;
+        width: calc(var(--percent)*1%);
+        height: 100%;
+        background: #2486ff;
+        white-space: nowrap;
+    } */
+     
+    /*************************/
+
+    .bar {
+      height: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .bar::before {
+      content: '';
+      display: flex;
+      justify-content: end;
+      width: calc(var(--percent) * 1%);
+      height: 100%;
+      background: #f5f5f5;
+      white-space: nowrap;
+
+      background-image: linear-gradient(green, green),
+      linear-gradient(orange, orange),
+      linear-gradient(red, red);
+      background-size: calc((var(--percent) - 67) * 100%) 100%,
+        calc((var(--percent) - 34) * 100%) 100%,
+        calc((var(--percent) - 1) * 100%) 100%,
+        100% 100%;
+    }
+
+
+
+    </style>
+</head>
+
+<body>
+    <div id="general">
+        <!-- <div id="loadingBar">
+            <progress value="33.33" min="0" max="100"/>
+        </div> -->
+        <div id="adjust" class="bar" style="--percent: 50;"></div>
+        <video src="../screenRecordings/4.mp4" id="myVid" controls></video>
+    </div>
+
+    <script>
+       
+        var video = document.getElementById('myVid');
+        var barChange = document.getElementById('adjust');
+        
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const websocketClient = new WebSocket("ws://localhost:12345/");
+
+            websocketClient.onopen = function () {
+                console.log('Client Connected!')
+                // websocketClient.send("hello!")
+            }
+
+            websocketClient.onmessage = function (msg) {
+                console.log(msg.data);
+                if (msg.data < 1) {
+                    video.pause();
+                    barChange.style = "--percent: 34;";
+                } else if (msg.data < 1.25) {
+                    video.play();
+                    video.playbackRate = 0.45;
+                    barChange.style = "--percent: 67;";
+
+                }else{
+                    video.play();
+                    video.playbackRate = 1;
+                    barChange.style = "--percent: 100;";
+                }
+
+
+            }
+
+        }, false)
+
+    </script>
+</body>
+
+</html>

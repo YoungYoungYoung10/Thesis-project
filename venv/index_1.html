@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>websocket chat</title>
+</head>
+
+<body>
+    <video src="../screenRecordings/4.mp4" id="myVid" controls></video>
+
+    <script>
+        //之前的代码~
+        // document.addEventListener('DOMContentLoaded', function () {
+
+        //     const websocketClient = new WebSocket("ws://localhost:12345/");
+
+        //     websocketClient.onopen = function(){
+        //         console.log('Client Connected!')
+        //         // websocketClient.send("hello!")
+        //     }
+
+        //     websocketClient.onmessage = function(msg){
+        //         console.log(msg.data);
+
+        //     }
+
+        // }, false)
+
+
+        
+        var video = document.getElementById('myVid');
+        document.addEventListener('DOMContentLoaded', function () {
+            const websocketClient = new WebSocket("ws://localhost:12345/");
+            websocketClient.onopen = function () {
+                console.log('Client Connected!')
+                // websocketClient.send("hello!")
+            }
+            websocketClient.onmessage = function (msg) {
+                console.log(msg.data);
+                if (msg.data < 1.2) {
+                    video.pause()
+                } else {
+                    video.play()
+                }
+            }
+        }, false)
+
+    </script>
+</body>
+
+</html>
